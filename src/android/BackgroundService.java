@@ -121,7 +121,7 @@ public abstract class BackgroundService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    super.onStartCommand(intent, flags, startId);
-	    Log.d(TAG, "onStartCommand run");
+	    Log.i(TAG, "onStartCommand run");
 
 	    initialiseService();
 	    return START_STICKY;  
@@ -174,9 +174,9 @@ public abstract class BackgroundService extends Service {
 
 			synchronized (mListeners) {
 				if (mListeners.add(listener))
-					Log.d(TAG, "Listener added");
+					Log.i(TAG, "Listener added");
 				else
-					Log.d(TAG, "Listener not added");
+					Log.i(TAG, "Listener not added");
 			}
 		}
 
@@ -196,9 +196,9 @@ public abstract class BackgroundService extends Service {
 					}
 					
 					if (removed)
-						Log.d(TAG, "Listener removed");
+						Log.i(TAG, "Listener removed");
 					else 
-						Log.d(TAG, "Listener not found");
+						Log.i(TAG, "Listener not found");
 				}
 			}
 		}
@@ -345,26 +345,26 @@ public abstract class BackgroundService extends Service {
 			public void run() {       
 				Log.i(TAG, "Timer task starting work");
 
-				Log.d(TAG, "Is the service paused?");
+				Log.i(TAG, "Is the service paused?");
 				Boolean paused = false;
 				if (mPausedUntil != null) {
-					Log.d(TAG, "Service is paused until " + (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(mPausedUntil));
+					Log.i(TAG, "Service is paused until " + (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(mPausedUntil));
 					Date current = new Date();
-					Log.d(TAG, "Current is " + (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(current));
+					Log.i(TAG, "Current is " + (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(current));
 					if (mPausedUntil.after(current)) {
-						Log.d(TAG, "Service should be paused");
+						Log.i(TAG, "Service should be paused");
 						paused = true;					// Still paused
 					} else {
-						Log.d(TAG, "Service should not be paused");
+						Log.i(TAG, "Service should not be paused");
 						mPausedUntil = null;				// Paused time has past so we can clear the pause
 						onPauseComplete();
 					}
 				}
 
 				if (paused) {
-					Log.d(TAG, "Service is paused");
+					Log.i(TAG, "Service is paused");
 				} else {
-					Log.d(TAG, "Service is not paused");
+					Log.i(TAG, "Service is not paused");
 					
 					// Runs the doWork 
 					// Sets the last result & updates the listeners

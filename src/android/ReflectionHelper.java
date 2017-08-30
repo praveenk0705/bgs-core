@@ -14,15 +14,15 @@ public class ReflectionHelper {
 	public static Class<?> LoadClass(String className) {
 		Class<?> result = null;
 	
-		Log.d(TAG, "Attempting to load call: " + className);
+		Log.i(TAG, "Attempting to load call: " + className);
 		ClassLoader classLoader = ReflectionHelper.class.getClassLoader();
 
 		try {
 			result = classLoader.loadClass(className);
-			Log.d(TAG, "Class loaded");
+			Log.i(TAG, "Class loaded");
 		} catch (ClassNotFoundException ex) {
-			Log.d(TAG, "Class failed to load");
-			Log.d(TAG, ex.getMessage());
+			Log.i(TAG, "Class failed to load");
+			Log.i(TAG, ex.getMessage());
 		}
 		
 		return result;
