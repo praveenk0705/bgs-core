@@ -342,7 +342,7 @@ public class BackgroundServicePluginLogic {
 			Thread t = new Thread() {
 				@Override
 				public void run() {
-					mSocket.connect();
+					//mSocket.connect();
 				}
 			};
 			t.start();
