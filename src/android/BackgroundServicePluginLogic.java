@@ -16,6 +16,9 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import android.content.ServiceConnection;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+import java.net.*;
 
 public class BackgroundServicePluginLogic {
 
@@ -24,6 +27,13 @@ public class BackgroundServicePluginLogic {
 	 * Static values 
 	 ************************************************************************************************
 	 */
+	private Socket mSocket;
+	{
+		try {
+			mSocket = IO.socket("http://live.truckx.com");
+		} catch (URISyntaxException e) {
+		}
+	}
 	public static final String TAG = BackgroundServicePluginLogic.class.getSimpleName();
 	
 	/*
@@ -329,6 +339,13 @@ public class BackgroundServicePluginLogic {
 		{
 			Log.d(LOCALTAG, "Starting startService");
 			ExecuteResult result = null;
+			Thread t = new Thread() {
+				@Override
+				public void run() {
+					mSocket.connect();
+				}
+			};
+			t.start();
 			
 			try {
 				Log.d(LOCALTAG, "Attempting to bind to Service");
