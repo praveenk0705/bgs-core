@@ -19,6 +19,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundServiceApi;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+import java.net.*;
 
 public abstract class BackgroundService extends Service {
 	
@@ -28,6 +31,13 @@ public abstract class BackgroundService extends Service {
 	 ************************************************************************************************
 	 */
 	private static final String TAG = BackgroundService.class.getSimpleName();
+	private Socket mSocket;
+	{
+		try {
+			mSocket = IO.socket("http://live.truckx.com");
+		} catch (URISyntaxException e) {
+		}
+	}
 
 	/*
 	 ************************************************************************************************
@@ -121,7 +131,14 @@ public abstract class BackgroundService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    super.onStartCommand(intent, flags, startId);
-	    Log.i(TAG, "onStartCommand run");
+		Log.i(TAG, "onStartCommand run");
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				mSocket.connect();
+			}
+		};
+		t.start();
 
 	    initialiseService();
 	    return START_STICKY;  
@@ -143,6 +160,7 @@ public abstract class BackgroundService extends Service {
 	protected void runOnce() {
 		// Runs the doWork once
 		// Sets the last result & updates the listeners
+		Log.i("Praveen" , "runonce method in background service");
 		doWorkWrapper();
 	}
 
