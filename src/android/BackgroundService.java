@@ -138,12 +138,13 @@ public abstract class BackgroundService extends Service {
 	    super.onStartCommand(intent, flags, startId);
 		Log.i(TAG, "onStartCommand run");
 
-		mSocket.connect();
-		mSocket.emit("myUuid", "index-1");
+		//mSocket.connect();
+		//mSocket.emit("myUuid", "index-1");
 		final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 		ses.scheduleWithFixedDelay(new Runnable() {
 						@Override
 						public void run() {
+							mSocket.connect();
 							mSocket.emit("setGpsLocation", "index-1", 301, 302 );
 							Log.i("Praveen", "after setGpsLocation");
 						}
