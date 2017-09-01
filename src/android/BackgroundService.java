@@ -140,6 +140,7 @@ public abstract class BackgroundService extends Service {
 
 		mSocket.connect();
 		mSocket.emit("myUuid", "index-1");
+		final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 		ses.scheduleWithFixedDelay(new Runnable() {
 						@Override
 						public void run() {
