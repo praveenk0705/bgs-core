@@ -138,28 +138,32 @@ public abstract class BackgroundService extends Service {
 	    super.onStartCommand(intent, flags, startId);
 		Log.i(TAG, "onStartCommand run");
 
-		// mSocket.connect();
-		// mSocket.emit("myUuid", "index-1");
-		// mSocket.emit("setGpsLocation", "index-1", 301, 302 );
-		// Log.i(TAG, "after myUuid emit");
-
-		Thread t = new Thread() {
-			@Override
-			public void run() {
-				mSocket.connect();
-				mSocket.emit("myUuid", "index-1");
-				Log.i("Praveen", "after myUuid emit");
-				final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
-				ses.scheduleWithFixedDelay(new Runnable() {
-					@Override
-					public void run() {
-						mSocket.emit("setGpsLocation", "index-1", 301, 302 );
-						Log.i("Praveen", "after setGpsLocation");
-					}
-				}, 0, 1, TimeUnit.SECONDS);
-			}
-		};
-		t.start();
+		mSocket.connect();
+		mSocket.emit("myUuid", "index-1");
+		ses.scheduleWithFixedDelay(new Runnable() {
+						@Override
+						public void run() {
+							mSocket.emit("setGpsLocation", "index-1", 301, 302 );
+							//Log.i("Praveen", "after setGpsLocation");
+						}
+					}, 0, 1, TimeUnit.SECONDS);
+		// Thread t = new Thread() {
+		// 	@Override
+		// 	public void run() {
+		// 		mSocket.connect();
+		// 		mSocket.emit("myUuid", "index-1");
+		// 		Log.i("Praveen", "after myUuid emit");
+		// 		final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+		// 		ses.scheduleWithFixedDelay(new Runnable() {
+		// 			@Override
+		// 			public void run() {
+		// 				mSocket.emit("setGpsLocation", "index-1", 301, 302 );
+		// 				Log.i("Praveen", "after setGpsLocation");
+		// 			}
+		// 		}, 0, 1, TimeUnit.SECONDS);
+		// 	}
+		// };
+		// t.start();
 
 	    initialiseService();
 	    return START_STICKY;  
