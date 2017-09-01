@@ -23,6 +23,11 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import java.net.*;
 
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public abstract class BackgroundService extends Service {
 	
 	/*
@@ -132,10 +137,26 @@ public abstract class BackgroundService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    super.onStartCommand(intent, flags, startId);
 		Log.i(TAG, "onStartCommand run");
+
+		// mSocket.connect();
+		// mSocket.emit("myUuid", "index-1");
+		// mSocket.emit("setGpsLocation", "index-1", 301, 302 );
+		// Log.i(TAG, "after myUuid emit");
+
 		Thread t = new Thread() {
 			@Override
 			public void run() {
 				mSocket.connect();
+				mSocket.emit("myUuid", "index-1");
+				Log.i("Praveen", "after myUuid emit");
+				final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+				ses.scheduleWithFixedDelay(new Runnable() {
+					@Override
+					public void run() {
+						mSocket.emit("setGpsLocation", "index-1", 301, 302 );
+						Log.i("Praveen", "after setGpsLocation");
+					}
+				}, 0, 1, TimeUnit.SECONDS);
 			}
 		};
 		t.start();
